@@ -129,7 +129,7 @@ Plugin 'iamcco/mathjax-support-for-mkdp'
 Plugin 'iamcco/markdown-preview.vim'
 
 
-let g:mkdp_path_to_chrome = "chrome"
+let g:mkdp_path_to_chrome = "firefox"
     " 设置 chrome 浏览器的路径（或是启动 chrome（或其他现代浏览器）的命令）
     " 如果设置了该参数, g:mkdp_browserfunc 将被忽略
 
