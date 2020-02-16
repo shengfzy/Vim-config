@@ -12,7 +12,7 @@ Plugin 'scrooloose/nerdtree'
 map <F2> :NERDTreeMirror<CR>
 map <F2> :NERDTreeToggle<CR>
 
-autocmd vimenter * NERDTree  "自动开启Nerdtree
+"autocmd vimenter * NERDTree  "自动开启Nerdtree
 "let g:NERDTreeWinSize = 25 "设定 NERDTree 视窗大小
 "开启/关闭nerdtree快捷键
 map <C-f> :NERDTreeToggle<CR>
@@ -48,7 +48,7 @@ let Tlist_Use_Right_Window=1
 "在左侧窗口中显示taglist窗口
 "let Tlist_Use_Left_Windo =1  
 "启动vim后自动打开
- let Tlist_Auto_Open=1
+ let Tlist_Auto_Open=0
 "打开关闭Taglist
 map <F3> :TlistToggle<CR>
 "按F5重新生成ctags
