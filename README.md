@@ -1,9 +1,9 @@
 ##Vim配置笔记  
--------
 
 ####从我的github上下载vimrc
 ```c
-git clone https://github.com/shengfzy/Vim-config```
+git clone https://github.com/shengfzy/Vim-config
+```
 
 ####安装Vundle插件管理器
 ```c
