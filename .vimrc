@@ -237,3 +237,13 @@ set nofoldenable
 "快速保存
 nnoremap <leader>w :w<CR>
 
+
+""""""""""""""""""""""""""""""""""""""""""""VIM基本配置"""""""""""""""""""""""""""""""""""""""""""""""""""""
+autocmd Filetype markdown inoremap ,f <ESC>/<++><CR>:nohlsearch<CR>c4l
+autocmd Filetype markdown inoremap ,b **** <++><ESC>F*hi
+autocmd Filetype markdown inoremap ,n ---<Enter><Enter>
+autocmd Filetype markdown inoremap ,s ~~~~ <++><ESC>F~hi
+autocmd Filetype markdown inoremap ,i ** <++><ESC>F*i
+autocmd Filetype markdown inoremap ,d `` <++><ESC>F`i
+autocmd Filetype markdown inoremap ,c ```<Enter><++><Enter>```<Enter><Enter><++><ESC>4kA
+
