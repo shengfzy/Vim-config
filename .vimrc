@@ -208,8 +208,8 @@ set ruler
 " 开启行号显示
 set number
 " 高亮显示当前行/列
-set cursorline
-set cursorcolumn
+"set cursorline
+"set cursorcolumn
 
 " 开启语法高亮功能
 syntax enable
@@ -247,3 +247,8 @@ autocmd Filetype markdown inoremap ,s ~~~~ <++><ESC>F~hi
 autocmd Filetype markdown inoremap ,i ** <++><ESC>F*i
 autocmd Filetype markdown inoremap ,d `` <++><ESC>F`i
 autocmd Filetype markdown inoremap ,c ```<Enter><++><Enter>```<Enter><Enter><++><ESC>4kA
+
+""Vim环境快捷键
+
+""Python snippets
+autocmd Filetype python inoremap ,m #!usr/bin/python<CR># -*- coding UTF-8 -*-<CR><CR>
