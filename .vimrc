@@ -249,6 +249,8 @@ autocmd Filetype markdown inoremap ,d `` <++><ESC>F`i
 autocmd Filetype markdown inoremap ,c ```<Enter><++><Enter>```<Enter><Enter><++><ESC>4kA
 
 ""Vim环境快捷键
+nnoremap J 3j
+nnoremap K 3k
 
 ""Python snippets
 autocmd Filetype python inoremap ,m #!usr/bin/python<CR># -*- coding UTF-8 -*-<CR><CR>
