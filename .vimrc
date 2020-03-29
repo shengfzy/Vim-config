@@ -1,26 +1,26 @@
 """"""""""""""""""""""""""""""""""""""""""""Vundle环境设置"""""""""""""""""""""""""""""""""""""""""""""""""""""
 filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
+"set rtp+=~/.vim/bundle/Vundle.vim
 " vundle 管理的插件列表必须位于 vundle#begin() 和 vundle#end() 之间
-call vundle#begin()
+call plug#begin('~/.vim/plugged')
 
 "避免PluginClean把自己卸载了                                                                                
-Plugin 'VundleVim/Vundle.vim'  
+"Plugin 'VundleVim/Vundle.vim'  
 
-"配置nerdtree插件
-Plugin 'scrooloose/nerdtree'
+""""""配置nerdtree插件""""""
+Plug 'scrooloose/nerdtree'
 map <F2> :NERDTreeMirror<CR>
 map <F2> :NERDTreeToggle<CR>
 
 "autocmd vimenter * NERDTree  "自动开启Nerdtree
 "let g:NERDTreeWinSize = 25 "设定 NERDTree 视窗大小
-"开启/关闭nerdtree快捷键
-map <C-f> :NERDTreeToggle<CR>
 "let NERDTreeShowBookmarks=1  " 开启Nerdtree时自动显示Bookmarks
+
 "打开vim时如果没有文件自动打开NERDTree
 autocmd vimenter * if !argc()|NERDTree|endif
 "当NERDTree为剩下的唯一窗口时自动关闭
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
 "设置树的显示图标
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
@@ -31,10 +31,12 @@ let g:NERDTreeHidden=0     "不显示隐藏文件
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 
-"实时显示符号定义插件
-Plugin 'vim-scripts/taglist.vim'
 
-""""""taglist""""""""
+""""""配置taglist""""""
+
+"实时显示符号定义插件
+Plug 'vim-scripts/taglist.vim'
+
 "ctags位于PATH目录下,所以可以省略具体路径
 let Tlist_Ctags_Cmd='ctags'
 "不同时显示多个文件的tag，只显示当前文件的
@@ -51,15 +53,42 @@ let Tlist_Use_Right_Window=1
  let Tlist_Auto_Open=0
 "打开关闭Taglist
 map <F3> :TlistToggle<CR>
+
+""""""配置ctags和gutentags""""""
+
 "按F5重新生成ctags
 "-R:表示递归创建，也就是包括源代码根目录(当前目录)下的所有子目录
 "--c++kinds=+ps是为c/c++语言添加函数原型信息
 "--fields=+iaS是为标签添加继承信息(inheritance),访问控制信息(access)和函数特征(Signature)如参数表或原型等
 "extra=+q是为类成员添加标签
-map <F5> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q<CR>
+"map <F5> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q<CR>
 
-"添加当前工程目录到vimrc下
-"set tags+= "/home/matteo/linux/IMX6ULL/Board_Drivers/2_leds"
+Plug 'ludovicchabant/vim-gutentags'
+
+"添加ctags的搜索路径
+" gutentags搜索工程目录的标志，碰到这些文件/目录名就停止向上一级目录递归 "
+let g:gutentags_project_root = ['.root', '.svn', '.git', '.project']
+
+" 所生成的数据文件的名称 
+let g:gutentags_ctags_tagfile = '.tags'
+
+" 将自动生成的 tags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录 "
+let s:vim_tags = expand('~/.cache/tags')
+let g:gutentags_cache_dir = s:vim_tags
+
+" 检测 ~/.cache/tags 不存在就新建 "
+if !isdirectory(s:vim_tags)
+   silent! call mkdir(s:vim_tags, 'p')
+endif
+
+" 配置 ctags 的参数 "
+let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
+let g:gutentags_ctags_extra_args += ['--c++-kinds=+pxI']
+let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+
+
+
+""""""配置cscope""""""
 "添加cscope当前工程的路径
 "cs add /home/matteo/linux/IMX6ULL/Board_Drivers/2_leds
 if filereadable("cscope.out")
@@ -70,9 +99,9 @@ endif
 "      ：cs find s ---- 查找C语言符号，即查找函数名、宏、枚举值等出现的地方
 "      　　：cs find g ----
 "      查找函数、宏、枚举等定义的位置，类似ctags所提供的功能
-"      　　：cs find d ---- 查找本函数调用的函数：cs find c ----
-"      查找调用本函数的函数
-"      　　：cs find t: ---- 查找指定的字符串
+"      　　：cs find d ---- 查找本函数调用的函数：
+"          : cs find c ---- 查找调用本函数的函数
+"      　　：cs find t: ----查找指定的字符串
 "      　　：cs find e ---- 查找egrep模式，相当于egrep功能，但查找速度快多了
 "      　　：cs find f ---- 查找并打开文件，类似vim的find功能
 "      　　：cs find i ---- 查找包含本文件的文
@@ -104,12 +133,15 @@ if has("cscope")
              nmap <C-/>d :cs find d <C-R>=expand("<cword>")<CR><CR>
 endif
 
-Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
+
+""""""配置makedown""""""
+
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
 "使用Latex数学公式
 let g:vim_markdown_math=1
 "自动在当前光标生成目录的插件
-Plugin 'mzlogin/vim-markdown-toc'
+Plug 'mzlogin/vim-markdown-toc'
 "在当前光标后生成目录
 ":GenTocMarked
 "更新目录
@@ -125,8 +157,8 @@ Plugin 'mzlogin/vim-markdown-toc'
 "  execute lstart.",".lnum."g/           /d"
 "endfunction
 
-Plugin 'iamcco/mathjax-support-for-mkdp'
-Plugin 'iamcco/markdown-preview.vim'
+Plug 'iamcco/mathjax-support-for-mkdp'
+Plug 'iamcco/markdown-preview.vim'
 
 
 let g:mkdp_path_to_chrome = "google-chrome"
@@ -167,7 +199,7 @@ nmap <silent> <F9> <Plug>StopMarkdownPreview    " 普通模式
 imap <silent> <F9> <Plug>StopMarkdownPreview    " 插入模式
 
 " 插件列表结束
-call vundle#end()
+call plug#end()
 filetype plugin indent on
 
 "安装插件，先找到其在 github.com 的地址，再将配置信息其加入 .vimrc   "中的call vundle#begin() 和 call vundle#end() 之间，最后进入 vim 执行
