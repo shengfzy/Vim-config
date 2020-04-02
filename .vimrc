@@ -290,6 +290,7 @@ inoremap ( ()<ESC>i
 inoremap { {}<ESC>i
 inoremap " ""<ESC>i
 inoremap ' ''<ESC>i
+inoremap <leader>/ /**/<ESC>hi
 
 autocmd Filetype c,c++ inoremap <leader>i #include ""<left>
 autocmd Filetype c,c++ inoremap <leader>I #include <><left>
