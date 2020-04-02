@@ -1,5 +1,4 @@
 """"""""""""""""""""""""""""""""""""""""""""Vundle环境设置"""""""""""""""""""""""""""""""""""""""""""""""""""""
-filetype off
 "set rtp+=~/.vim/bundle/Vundle.vim
 " vundle 管理的插件列表必须位于 vundle#begin() 和 vundle#end() 之间
 call plug#begin('~/.vim/plugged')
@@ -134,7 +133,7 @@ if has("cscope")
 endif
 
 
-""""""配置makedown""""""
+""""""配置markdown""""""
 
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
@@ -185,7 +184,7 @@ let g:mkdp_refresh_slow = 0
     " 更新预览
 
 let g:mkdp_command_for_global = 0
-    " 设置为 1 则所有文件都可以使用 MarkdownPreview 进行预览，默认只有 markdown
+    " 设置为 1 则所有文件都可以使用 markdownPreview 进行预览，默认只有 markdown
     " 文件可以使用改命令
 
 let g:mkdp_open_to_the_world = 0
@@ -193,14 +192,14 @@ let g:mkdp_open_to_the_world = 0
     " 默认只监听本地（127.0.0.1），其他计算机不能访问
 
 
-nmap <silent> <F8> <Plug>MarkdownPreview        " 普通模式
-imap <silent> <F8> <Plug>MarkdownPreview        " 插入模式
-nmap <silent> <F9> <Plug>StopMarkdownPreview    " 普通模式
-imap <silent> <F9> <Plug>StopMarkdownPreview    " 插入模式
+nmap <silent> <F8> <Plug>markdownPreview        " 普通模式
+imap <silent> <F8> <Plug>markdownPreview        " 插入模式
+nmap <silent> <F9> <Plug>StopmarkdownPreview    " 普通模式
+imap <silent> <F9> <Plug>StopmarkdownPreview    " 插入模式
 
 " 插件列表结束
 call plug#end()
-filetype plugin indent on
+"filetype plugin indent on
 
 "安装插件，先找到其在 github.com 的地址，再将配置信息其加入 .vimrc   "中的call vundle#begin() 和 call vundle#end() 之间，最后进入 vim 执行
 ":PluginInstall 便可自动安装
@@ -229,7 +228,8 @@ set ignorecase
 " 高亮显示搜索结果
 set hlsearch         
  " 关闭兼容模式                         
-set nocompatible   
+set nocompatible
+set backspace=indent,eol,start
  " vim 自身命令行模式智能补全                      
 set wildmenu   
  
@@ -271,18 +271,28 @@ nnoremap <leader>w :w<CR>
 
 
 """"""""""""""""""""""""""""""""""""""""""""VIM基本配置"""""""""""""""""""""""""""""""""""""""""""""""""""""
-""Markdown快捷键设置
-autocmd Filetype markdown inoremap ,f <ESC>/<++><CR>:nohlsearch<CR>c4l
-autocmd Filetype markdown inoremap ,b **** <++><ESC>F*hi
-autocmd Filetype markdown inoremap ,n ---<Enter><Enter>
-autocmd Filetype markdown inoremap ,s ~~~~ <++><ESC>F~hi
-autocmd Filetype markdown inoremap ,i ** <++><ESC>F*i
-autocmd Filetype markdown inoremap ,d `` <++><ESC>F`i
-autocmd Filetype markdown inoremap ,c ```<Enter><++><Enter>```<Enter><Enter><++><ESC>4kA
+""markdown快捷键设置
+autocmd Filetype markdown inoremap <leader>f <ESC>/<++><CR>:nohlsearch<CR>c4l
+autocmd Filetype markdown inoremap <leader>b **** <++><ESC>F*hi
+autocmd Filetype markdown inoremap <leader>n ---<Enter><Enter>
+autocmd Filetype markdown inoremap <leader>s ~~~~ <++><ESC>F~hi
+autocmd Filetype markdown inoremap <leader>i ** <++><ESC>F*i
+autocmd Filetype markdown inoremap <leader>d `` <++><ESC>F`i
+autocmd Filetype markdown inoremap <leader>c ```<Enter><++><Enter>```<Enter><Enter><++><ESC>4kA
 
 ""Vim环境快捷键
 nnoremap J 3j
 nnoremap K 3k
+
+inoremap [ []<ESC>i
+inoremap < <><ESC>i
+inoremap ( ()<ESC>i
+inoremap { {}<ESC>i
+inoremap ' ''<ESC>i
+
+autocmd Filetype c,c++ inoremap <leader>i #include ""<left>
+autocmd Filetype c,c++ inoremap <leader>I #include <><left>
+
 
 ""Python snippets
 autocmd Filetype python inoremap ,m #!usr/bin/python<CR># -*- coding UTF-8 -*-<CR><CR>
