@@ -4,7 +4,10 @@
 call plug#begin('~/.vim/plugged')
 
 "避免PluginClean把自己卸载了                                                                                
-"Plugin 'VundleVim/Vundle.vim'  
+"Plugin 'VundleVim/Vundle.vim' 
+"
+""""""配置YouCompleteMe"""""
+"Plug 'Valloric/YouCompleteMe'
 
 """"""配置nerdtree插件""""""
 Plug 'scrooloose/nerdtree'
@@ -88,16 +91,19 @@ let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
 
 
 """"""配置cscope""""""
+
 "添加cscope当前工程的路径
 "cs add /home/matteo/linux/IMX6ULL/Board_Drivers/2_leds
+
+
+
 if filereadable("cscope.out")
   cs add cscope.out
 endif
 
 "附cscope常用的命令：
-"      ：cs find s ---- 查找C语言符号，即查找函数名、宏、枚举值等出现的地方
-"      　　：cs find g ----
-"      查找函数、宏、枚举等定义的位置，类似ctags所提供的功能
+"          ：cs find s ---- 查找C语言符号，即查找函数名、宏、枚举值等出现的地方
+"      　　：cs find g ---- 查找函数、宏、枚举等定义的位置，类似ctags所提供的功能
 "      　　：cs find d ---- 查找本函数调用的函数：
 "          : cs find c ---- 查找调用本函数的函数
 "      　　：cs find t: ----查找指定的字符串
@@ -122,14 +128,14 @@ if has("cscope")
              " show msg when any other cscope db added
              set cscopeverbose
 
-             nmap <C-/>s :cs find s <C-R>=expand("<cword>")<CR><CR>
-             nmap <C-/>g :cs find g <C-R>=expand("<cword>")<CR><CR>
-             nmap <C-/>c :cs find c <C-R>=expand("<cword>")<CR><CR>
-             nmap <C-/>t :cs find t <C-R>=expand("<cword>")<CR><CR>
-             nmap <C-/>e :cs find e <C-R>=expand("<cword>")<CR><CR>
-             nmap <C-/>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
-             nmap <C-/>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-             nmap <C-/>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+             nmap <C-_>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+             nmap <C-_>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+             nmap <C-_>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+             nmap <C-_>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+             nmap <C-_>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+             nmap <C-_>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+             nmap <C-_>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+             nmap <C-_>d :cs find d <C-R>=expand("<cword>")<CR><CR>
 endif
 
 
