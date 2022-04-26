@@ -1,306 +1,138 @@
-""""""""""""""""""""""""""""""""""""""""""""Vundle环境设置"""""""""""""""""""""""""""""""""""""""""""""""""""""
-"set rtp+=~/.vim/bundle/Vundle.vim
-" vundle 管理的插件列表必须位于 vundle#begin() 和 vundle#end() 之间
-call plug#begin('~/.vim/plugged')
+" Vimrc for matteo
+" Author : shenkai
+" Date   : 2022-4-23
 
-"避免PluginClean把自己卸载了                                                                                
-"Plugin 'VundleVim/Vundle.vim' 
-"
-""""""配置YouCompleteMe"""""
-"Plug 'Valloric/YouCompleteMe'
+" set number relativenumber 
+set number
+set nocompatible
+set hidden
+let mapleader = ","
 
-""""""配置nerdtree插件""""""
-Plug 'scrooloose/nerdtree'
-map <F2> :NERDTreeMirror<CR>
-map <F2> :NERDTreeToggle<CR>
+" set search option
+set hlsearch
+set ignorecase
+set incsearch
 
-"autocmd vimenter * NERDTree  "自动开启Nerdtree
-"let g:NERDTreeWinSize = 25 "设定 NERDTree 视窗大小
-"let NERDTreeShowBookmarks=1  " 开启Nerdtree时自动显示Bookmarks
+" use netrw
+set nocp
+filetype plugin on
 
-"打开vim时如果没有文件自动打开NERDTree
-autocmd vimenter * if !argc()|NERDTree|endif
-"当NERDTree为剩下的唯一窗口时自动关闭
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-"设置树的显示图标
-let g:NERDTreeDirArrowExpandable = '▸'
-let g:NERDTreeDirArrowCollapsible = '▾'
-let NERDTreeIgnore = ['\.pyc$']  " 过滤所有.pyc文件不显示
-"let g:NERDTreeShowLineNumbers=1  " 是否显示行号
-let g:NERDTreeHidden=0     "不显示隐藏文件
-"Making it prettier
-let NERDTreeMinimalUI = 1
-let NERDTreeDirArrows = 1
-
-
-""""""配置taglist""""""
-
-"实时显示符号定义插件
-Plug 'vim-scripts/taglist.vim'
-
-"ctags位于PATH目录下,所以可以省略具体路径
-let Tlist_Ctags_Cmd='ctags'
-"不同时显示多个文件的tag，只显示当前文件的
-let Tlist_Show_One_File=1
-"设置taglist的宽度
-let Tlist_WinWidth =40
-"如果taglist窗口是最后一个窗口，则退出vim
-let Tlist_Exit_OnlyWindow=1
-"在右侧窗口中显示taglist窗口
-let Tlist_Use_Right_Window=1
-"在左侧窗口中显示taglist窗口
-"let Tlist_Use_Left_Windo =1  
-"启动vim后自动打开
- let Tlist_Auto_Open=0
-"打开关闭Taglist
-map <F3> :TlistToggle<CR>
-
-""""""配置ctags和gutentags""""""
-
-"按F5重新生成ctags
-"-R:表示递归创建，也就是包括源代码根目录(当前目录)下的所有子目录
-"--c++kinds=+ps是为c/c++语言添加函数原型信息
-"--fields=+iaS是为标签添加继承信息(inheritance),访问控制信息(access)和函数特征(Signature)如参数表或原型等
-"extra=+q是为类成员添加标签
-"map <F5> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q<CR>
-
-Plug 'ludovicchabant/vim-gutentags'
-
-"添加ctags的搜索路径
-" gutentags搜索工程目录的标志，碰到这些文件/目录名就停止向上一级目录递归 "
-let g:gutentags_project_root = ['.root', '.svn', '.git', '.project']
-
-" 所生成的数据文件的名称 
-let g:gutentags_ctags_tagfile = '.tags'
-
-" 将自动生成的 tags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录 "
-let s:vim_tags = expand('~/.cache/tags')
-let g:gutentags_cache_dir = s:vim_tags
-
-" 检测 ~/.cache/tags 不存在就新建 "
-if !isdirectory(s:vim_tags)
-   silent! call mkdir(s:vim_tags, 'p')
+"============================== start plugin ==============================
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-" 配置 ctags 的参数 "
-let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
-let g:gutentags_ctags_extra_args += ['--c++-kinds=+pxI']
-let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+"begin vim-plug
+call plug#begin()
 
+"plug-in: fzf
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 
+"plug-in: NERDTree
+Plug 'preservim/nerdtree'
 
-""""""配置cscope""""""
+"plug-in: vim-rainbow
+Plug 'frazrepo/vim-rainbow'
 
-"添加cscope当前工程的路径
-"cs add /home/matteo/linux/IMX6ULL/Board_Drivers/2_leds
+"Plug-in: YouCompleteMe
+Plug 'Valloric/YouCompleteMe'
 
+call plug#end()
+"------------------------------ end plugin ------------------------------
 
+"============================== config: fzf search ==============================
+nnoremap <silent> <Leader>b :Buffers<CR>
+nnoremap <silent> <C-p> :Files<CR>
+nnoremap <silent> <Leader>f :Rg<CR>
+nnoremap <silent> <Leader>/ :BLines<CR>
+nnoremap <silent> <Leader>' :Marks<CR>
+nnoremap <silent> <Leader>g :Commits<CR>
+nnoremap <silent> <Leader>H :Helptags<CR>
+nnoremap <silent> <Leader>hh :History<CR>
+nnoremap <silent> <Leader>h: :History:<CR>
+nnoremap <silent> <Leader>h/ :History/<CR>
 
-if filereadable("cscope.out")
-  cs add cscope.out
-endif
+" replace default grep with Rg
+set grepprg=rg\ --vimgrep\ --smart-case\ --follow
+"------------------------------ config: fzf end --------------------------------
 
-"附cscope常用的命令：
-"          ：cs find s ---- 查找C语言符号，即查找函数名、宏、枚举值等出现的地方
-"      　　：cs find g ---- 查找函数、宏、枚举等定义的位置，类似ctags所提供的功能
-"      　　：cs find d ---- 查找本函数调用的函数：
-"          : cs find c ---- 查找调用本函数的函数
-"      　　：cs find t: ----查找指定的字符串
-"      　　：cs find e ---- 查找egrep模式，相当于egrep功能，但查找速度快多了
-"      　　：cs find f ---- 查找并打开文件，类似vim的find功能
-"      　　：cs find i ---- 查找包含本文件的文
+"============================== config: NERDTree ==============================
+"nnoremap <leader>n :NERDTreeFocus<CR>
+"nnoremap <C-n> :NERDTree<CR>
+nnoremap <F2> :NERDTreeToggle<CR>
+"nnoremap <C-f> :NERDTreeFind<CR>
+" Exit Vim if NERDTree is the only window remaining in the only tab.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+"------------------------------ config: NERDTree end ---------------------------
+
+"============================== Config: rainbow ==============================
+let g:rainbow_active = 1
+
+let g:rainbow_load_separately = [
+    \ [ '*' , [['(', ')'], ['\[', '\]'], ['{', '}']] ],
+    \ [ '*.tex' , [['(', ')'], ['\[', '\]']] ],
+    \ [ '*.cpp' , [['(', ')'], ['\[', '\]'], ['{', '}']] ],
+    \ [ '*.{html,htm}' , [['(', ')'], ['\[', '\]'], ['{', '}'], ['<\a[^>]*>', '</[^>]*>']] ],
+    \ ]
+
+let g:rainbow_guifgs = ['RoyalBlue3', 'DarkOrange3', 'DarkOrchid3', 'FireBrick']
+let g:rainbow_ctermfgs = ['lightblue', 'lightgreen', 'yellow', 'red', 'magenta']
+"------------------------------ config: rainbow end ---------------------------
+
+"============================== Config: ctags/scope ==============================
+"Generate tags and cscope.out from FileList.txt (c, cpp, h, hpp)
+nmap <C-@> :!find -name "*.c" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp" > FileList.txt<CR>
+                       \ :!ctags -L -< FileList.txt<CR>
+                       \ :!cscope -bkq -i FileList.txt<CR>
 
 if has("cscope")
-            set cscopetag   " 使支持用 Ctrl+]  和 Ctrl+t 快捷键在代码间跳来跳去
-            " check cscope for definition of a symbol before checking ctags:
-            " set to 1 if you want the reverse search order.
-             set csto=1
-
-             " add any cscope database in current directory
-             if filereadable("cscope.out")
-                 cs add cscope.out
-             " else add the database pointed to by environment variable
-             elseif $CSCOPE_DB !=""
-                 cs add $CSCOPE_DB
-             endif
-
-             " show msg when any other cscope db added
-             set cscopeverbose
-
-             nmap <C-_>s :cs find s <C-R>=expand("<cword>")<CR><CR>
-             nmap <C-_>g :cs find g <C-R>=expand("<cword>")<CR><CR>
-             nmap <C-_>c :cs find c <C-R>=expand("<cword>")<CR><CR>
-             nmap <C-_>t :cs find t <C-R>=expand("<cword>")<CR><CR>
-             nmap <C-_>e :cs find e <C-R>=expand("<cword>")<CR><CR>
-             nmap <C-_>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
-             nmap <C-_>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-             nmap <C-_>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+    set csto=0
+    set nocsverb
+    " add any database in current directory
+    if filereadable("cscope.out")
+        cs add cscope.out
+    endif
+    set csverb
+    "set cst  这两句会将cscope当作tag，当找不到时会卡住，因此注释掉
+    "set cscopetag
 endif
 
+nmap zs :cs find s <C-R>=expand("<cword>")<CR><CR>
+nmap zg :cs find g <C-R>=expand("<cword>")<CR><CR>
+nmap zc :cs find c <C-R>=expand("<cword>")<CR><CR>
+nmap zt :cs find t <C-R>=expand("<cword>")<CR><CR>
+nmap ze :cs find e <C-R>=expand("<cword>")<CR><CR>
+nmap zf :cs find f <C-R>=expand("<cfile>")<CR><CR>
+nmap zi :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+nmap zd :cs find d <C-R>=expand("<cword>")<CR><CR>
+"------------------------------ config: ctags end --------------------------------
 
-""""""配置markdown""""""
+"============================== Config: YCM ==============================
+let g:ycm_show_diagnostics_ui = 0
+let g:ycm_server_log_level = 'info'
+let g:ycm_min_num_identifier_candidate_chars = 2
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_complete_in_strings=1
+let g:ycm_key_invoke_completion = ''
 
-Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
-"使用Latex数学公式
-let g:vim_markdown_math=1
-"自动在当前光标生成目录的插件
-Plug 'mzlogin/vim-markdown-toc'
-"在当前光标后生成目录
-":GenTocMarked
-"更新目录
-":UpdateToc
-"取消存储时自动更新目录
-"let g:vmt_auto_update_on_save=0
-"自动找到较低层次的目录,然后删除之
-"function RToc()
-"  exe "/-toc .* -->"
-"  let lstart=line('.')
-"  exe "/-toc -->"
-"  let lnum=line('.')
-"  execute lstart.",".lnum."g/           /d"
-"endfunction
+let g:ycm_semantic_triggers = {
+\ 'c,cpp,python': ['re!\w{2}'],
+\ 'cs,lua,javascript': ['re!\w{2}'],
+\ }
 
-Plug 'iamcco/mathjax-support-for-mkdp'
-Plug 'iamcco/markdown-preview.vim'
-
-
-let g:mkdp_path_to_chrome = "google-chrome"
-    " 设置 chrome 浏览器的路径（或是启动 chrome（或其他现代浏览器）的命令）
-    " 如果设置了该参数, g:mkdp_browserfunc 将被忽略
-
-"let g:mkdp_browserfunc = 'MKDP_browserfunc_default'
-    " vim 回调函数, 参数为要打开的 url
-
-let g:mkdp_auto_start = 0
-    " 设置为 1 可以在打开 markdown 文件的时候自动打开浏览器预览，只在打开
-    " markdown 文件的时候打开一次
-
-let g:mkdp_auto_open = 0
-    " 设置为 1 在编辑 markdown 的时候检查预览窗口是否已经打开，否则自动打开预
-    " 览窗口
-
-let g:mkdp_auto_close = 1
-    " 在切换 buffer 的时候自动关闭预览窗口，设置为 0 则在切换 buffer 的时候不
-    " 自动关闭预览窗口
-
-let g:mkdp_refresh_slow = 0
-    " 设置为 1 则只有在保存文件，或退出插入模式的时候更新预览，默认为 0，实时
-    " 更新预览
-
-let g:mkdp_command_for_global = 0
-    " 设置为 1 则所有文件都可以使用 markdownPreview 进行预览，默认只有 markdown
-    " 文件可以使用改命令
-
-let g:mkdp_open_to_the_world = 0
-    " 设置为 1, 在使用的网络中的其他计算机也能访问预览页面
-    " 默认只监听本地（127.0.0.1），其他计算机不能访问
-
-
-nmap <silent> <F8> <Plug>markdownPreview        " 普通模式
-imap <silent> <F8> <Plug>markdownPreview        " 插入模式
-nmap <silent> <F9> <Plug>StopmarkdownPreview    " 普通模式
-imap <silent> <F9> <Plug>StopmarkdownPreview    " 插入模式
-
-" 插件列表结束
-call plug#end()
-"filetype plugin indent on
-
-"安装插件，先找到其在 github.com 的地址，再将配置信息其加入 .vimrc   "中的call vundle#begin() 和 call vundle#end() 之间，最后进入 vim 执行
-":PluginInstall 便可自动安装
-
-"要卸载插件，先在 .vimrc 中注释或者删除对应插件配置信息，然后在 vim  "中执行:PluginClean 便可卸载对应插件
-
-"批量更新，只需执行:PluginUpdate
-
-""""""""""""""""""""""""""""""""""""""""""""VIM基本配置"""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 定义快捷键的前缀，即<Leader>
-let mapleader=","
-"开启文件类型检测
-filetype on        
-"根据检测到的类型加载不同的插件    
-filetype plugin on      
-
-"让配置文件的更改立即生效
-autocmd BufWritePost ${MYVIMRC} source ${MYVIMRC}  
-
- " 使用鼠标
-set mouse=a 
- " 开启实时搜索功能
-set incsearch                                 
- " 搜索时大小写不敏感
-set ignorecase  
-" 高亮显示搜索结果
-set hlsearch         
- " 关闭兼容模式                         
-set nocompatible
+let g:ycm_global_ycm_extra_conf='~/.vim/plugged/YouCompleteMe/.ycm_extra_conf.py'
+let g:ycm_confirm_extra_conf = 0
 set backspace=indent,eol,start
- " vim 自身命令行模式智能补全                      
-set wildmenu   
- 
-" 总是显示状态栏
-set laststatus=2
-" 显示光标当前位置
-set ruler
-" 开启行号显示
-set number
-" 高亮显示当前行/列
-"set cursorline
-"set cursorcolumn
 
-" 开启语法高亮功能
-syntax enable
-" 允许用指定语法高亮配色方案替换默认方案
-syntax on         
+highlight PMenu ctermfg=0 ctermbg=255 guifg=black guibg=Grey93
+highlight PMenuSel ctermfg=255 ctermbg=0 guifg=Grey93 guibg=black
+"------------------------------ config: YCM  --------------------------------
 
-" 自适应不同语言的智能缩进
-filetype indent on
-" 将制表符扩展为空格
-set expandtab
-" 设置编辑时制表符占用空格数
-set tabstop=4
-" 设置格式化时制表符占用空格数
-set shiftwidth=2
-" 让 vim 把连续数量的空格视为一个制表符
-set softtabstop=4
- 
-" 基于缩进或语法进行代码折叠
-"set foldmethod=indent
-set foldmethod=syntax
-" 启动 vim 时关闭折叠代码
-set nofoldenable          
-"za，打开或关闭当前折叠；zM，关闭所有折叠；zR，打开所有折叠
-
-"快速保存
-nnoremap <leader>w :w<CR>
-
-
-""""""""""""""""""""""""""""""""""""""""""""VIM基本配置"""""""""""""""""""""""""""""""""""""""""""""""""""""
-""markdown快捷键设置
-autocmd Filetype markdown inoremap <leader>f <ESC>/<++><CR>:nohlsearch<CR>c4l
-autocmd Filetype markdown inoremap <leader>b **** <++><ESC>F*hi
-autocmd Filetype markdown inoremap <leader>n ---<Enter><Enter>
-autocmd Filetype markdown inoremap <leader>s ~~~~ <++><ESC>F~hi
-autocmd Filetype markdown inoremap <leader>i ** <++><ESC>F*i
-autocmd Filetype markdown inoremap <leader>d `` <++><ESC>F`i
-autocmd Filetype markdown inoremap <leader>c ```<Enter><++><Enter>```<Enter><Enter><++><ESC>4kA
-
-""Vim环境快捷键
-nnoremap J 3j
-nnoremap K 3k
-
-inoremap [ []<ESC>i
-inoremap < <><ESC>i
-inoremap ( ()<ESC>i
-inoremap { {}<ESC>i
-inoremap " ""<ESC>i
-inoremap ' ''<ESC>i
-inoremap <leader>/ /**/<ESC>hi
-
-autocmd Filetype c,c++ inoremap <leader>i #include ""<left>
-autocmd Filetype c,c++ inoremap <leader>I #include <><left>
-
-
-""Python snippets
-autocmd Filetype python inoremap ,m #!usr/bin/python<CR># -*- coding UTF-8 -*-<CR><CR>
+"============================== User keyboard mapping ==============================
+nnoremap <silent> <up> :cp<CR>
+nnoremap <silent> <down> :cn<CR>
+nnoremap <esc><esc> :noh<return><esc>
+inoremap jj <esc>
